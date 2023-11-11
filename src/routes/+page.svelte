@@ -1,42 +1,55 @@
 <script>
-    import OrderList from "../lib/components/orderList.svelte";
+  import SecretPizza from '$lib/components/alertButton.svelte'
 
   let info = [
     {
       name: "Bob",
       toppings: ["Pepperoni"," Cheese"," Ham"],
-      drink: "beer"
     },
     {
       name: "Charles",
       toppings: ["Cheese"],
-      drink: "Coke"
     },
     {
       name: "Luke",
       toppings: ["Pepperoni"," Cheese"," Onions"," Green Peppers"],
-      drink: "Water"
     }
   ];
     let newName
     let toppings = []
- const addItem = function updateList(event){
+    let special = false
+
+  function addItem(event){
     info = [...info,{name:newName,toppings:toppings}]
-}
+  }
+
+  function handleMessage(event) {
+    alert(event.detail.text)
+    special = true
+  }
+
 </script>
 
-<h2>Order</h2>
-<input bind:value={newName} placeholder="enter your name" />
-<label><input type="checkbox" bind:group={toppings} value={"Pepperoni"} />Pepperoni</label>
-<label><input type="checkbox" bind:group={toppings} value={"Cheese"} />Cheese</label>
-<label><input type="checkbox" bind:group={toppings} value={"Mushrooms"} />Mushrooms</label>
-<button on:click={addItem}>Order</button>
+<section class="p-4 flex flex-col">
+  <h2 class="m-auto text-2xl">Order</h2>
+  <SecretPizza on:message={handleMessage}/>
+  <div class="flex flex-col m-auto">
+    <label>Name <input bind:value={newName} placeholder="enter your name"/></label>
+    <label>Toppings</label>
+    <label><input type="checkbox" bind:group={toppings} value={"Pepperoni"} />Pepperoni</label>
+    <label><input type="checkbox" bind:group={toppings} value={"Cheese"} />Cheese</label>
+    <label><input type="checkbox" bind:group={toppings} value={"Mushrooms"} />Mushrooms</label>
+    {#if special === true}
+      <label><input type="checkbox" bind:group={toppings} value={"Chocolate"} />Chocolate</label>
+      <label><input type="checkbox" bind:group={toppings} value={"Gummies"} />Gummies</label>
+    {/if}
+    <button class="bg-blue-400 p-4" on:click={addItem}>Order</button>
+  </div>
+</section>
 
-
-<h1>Current orders</h1>
-{#each info as orders}
-<p>{orders.name} has orderd pizza with {orders.toppings} and a {orders.drink}.</p>
-{/each}
-
-
-
+<section class="flex p-4 flex-col">
+  <h2 class="m-auto text-2xl">Current orders</h2>
+  {#each info as orders}
+  <p class="m-auto">{orders.name} has orderd pizza with {orders.toppings}.</p>
+  {/each}
+</section>
