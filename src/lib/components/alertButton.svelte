@@ -2,15 +2,16 @@
   import {createEventDispatcher} from 'svelte'
 
   const dispatch = createEventDispatcher()
-
+  export let buttonText;
+  
   function eventClickMe() {
    dispatch('message', {
-    text:"Special toppings added"}
+    text:"No coupons available at the moment"}
     );
   }
 </script>
 
+<!-- dispatch event -->
 <section class="m-auto text-center">
-  <h2>Special Toppings</h2>
-  <button on:click|once={eventClickMe} class="bg-blue-200 p-2">Add</button>
+  <button on:click={eventClickMe} class="bg-blue-200 p-2">{buttonText}</button>
 </section>
